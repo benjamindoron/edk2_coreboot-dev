@@ -24,14 +24,15 @@
   OUTPUT_DIRECTORY                    = Build/UefiPayloadPkgIA32
   FLASH_DEFINITION                    = UefiPayloadPkg/UefiPayloadPkg.fdf
 
-  DEFINE SOURCE_DEBUG_ENABLE          = FALSE
-  DEFINE PS2_KEYBOARD_ENABLE          = FALSE
-
   #
   # SBL:      UEFI payload for Slim Bootloader
   # COREBOOT: UEFI payload for coreboot
   #
   DEFINE   BOOTLOADER = SBL
+
+  DEFINE SOURCE_DEBUG_ENABLE     = FALSE
+  DEFINE PS2_KEYBOARD_ENABLE     = FALSE
+  DEFINE SECURE_BOOT_ENABLE      = FALSE
 
   #
   # CPU options
@@ -210,9 +211,27 @@
   DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
   LockBoxLib|MdeModulePkg/Library/LockBoxNullLib/LockBoxNullLib.inf
   FileExplorerLib|MdeModulePkg/Library/FileExplorerLib/FileExplorerLib.inf
-  AuthVariableLib|MdeModulePkg/Library/AuthVariableLibNull/AuthVariableLibNull.inf
   TpmMeasurementLib|MdeModulePkg/Library/TpmMeasurementLibNull/TpmMeasurementLibNull.inf
   VarCheckLib|MdeModulePkg/Library/VarCheckLib/VarCheckLib.inf
+
+  #
+  # API
+  #
+  ShellCEntryLib|ShellPkg/Library/UefiShellCEntryLib/UefiShellCEntryLib.inf
+  BaseCryptLib|CryptoPkg/Library/BaseCryptLib/BaseCryptLib.inf
+!if $(NETWORK_TLS_ENABLE) == TRUE
+  OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLib.inf
+!else
+  OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLibCrypto.inf
+!endif
+  IntrinsicLib|CryptoPkg/Library/IntrinsicLib/IntrinsicLib.inf
+
+!if $(SECURE_BOOT_ENABLE) == TRUE
+  PlatformSecureLib|SecurityPkg/Library/PlatformSecureLibNull/PlatformSecureLibNull.inf
+  AuthVariableLib|SecurityPkg/Library/AuthVariableLib/AuthVariableLib.inf
+!else
+  AuthVariableLib|MdeModulePkg/Library/AuthVariableLibNull/AuthVariableLibNull.inf
+!endif
 
 !if $(BOOTLOADER) == "COREBOOT"
   SmmStoreLib|UefiPayloadPkg/Library/SMMStoreLib/SMMStoreLib.inf
@@ -264,6 +283,9 @@
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
   MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
   ReportStatusCodeLib|MdeModulePkg/Library/RuntimeDxeReportStatusCodeLib/RuntimeDxeReportStatusCodeLib.inf
+!if $(SECURE_BOOT_ENABLE) == TRUE
+  BaseCryptLib|CryptoPkg/Library/BaseCryptLib/RuntimeCryptLib.inf
+!endif
 
 [LibraryClasses.common.UEFI_DRIVER,LibraryClasses.common.UEFI_APPLICATION]
   PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
@@ -301,6 +323,10 @@
 
 !if $(SOURCE_DEBUG_ENABLE)
   gEfiSourceLevelDebugPkgTokenSpaceGuid.PcdDebugLoadImageMethod|0x2
+!endif
+
+!if $(SECURE_BOOT_ENABLE) == TRUE
+  gEfiSecurityPkgTokenSpaceGuid.PcdUserPhysicalPresence|TRUE
 !endif
 
 [PcdsPatchableInModule.common]
@@ -413,7 +439,12 @@
   #
   # Components that produce the architectural protocols
   #
-  MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
+  MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf {
+    <LibraryClasses>
+    !if $(SECURE_BOOT_ENABLE) == TRUE
+      NULL|SecurityPkg/Library/DxeImageVerificationLib/DxeImageVerificationLib.inf
+    !endif
+  }
   UefiCpuPkg/CpuDxe/CpuDxe.inf
   MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
   MdeModulePkg/Logo/LogoDxe.inf
@@ -539,6 +570,15 @@
   UefiPayloadPkg/BlSMMStoreDxe/BlSMMStoreDxe.inf
 !endif
 
+  #
+  # Security
+  #
+!if $(SECURE_BOOT_ENABLE) == TRUE
+  SecurityPkg/VariableAuthenticated/SecureBootConfigDxe/SecureBootConfigDxe.inf
+  OvmfPkg/EnrollDefaultKeys/EnrollDefaultKeys.inf
+  UefiPayloadPkg/SecureBootEnrollDefaultKeys/SecureBootSetup.inf
+!endif
+
   #------------------------------
   #  Build the shell
   #------------------------------
@@ -602,7 +642,6 @@
       DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
       HandleParsingLib|ShellPkg/Library/UefiHandleParsingLib/UefiHandleParsingLib.inf
       PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
-      ShellCEntryLib|ShellPkg/Library/UefiShellCEntryLib/UefiShellCEntryLib.inf
       ShellCommandLib|ShellPkg/Library/UefiShellCommandLib/UefiShellCommandLib.inf
       SortLib|MdeModulePkg/Library/UefiSortLib/UefiSortLib.inf
   }
