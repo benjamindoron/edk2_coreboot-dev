@@ -51,6 +51,12 @@ INF MdeModulePkg/Universal/StatusCodeHandler/Pei/StatusCodeHandlerPei.inf
 INF UefiPayloadPkg/BlSupportPei/BlSupportPei.inf
 INF MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
 
+!if $(TPM_ENABLE) == TRUE
+INF OvmfPkg/Tcg/Tcg2Config/Tcg2ConfigPei.inf
+INF SecurityPkg/Tcg/TcgPei/TcgPei.inf
+INF SecurityPkg/Tcg/Tcg2Pei/Tcg2Pei.inf
+!endif
+
 ################################################################################
 
 [FV.DXEFV]
@@ -247,6 +253,16 @@ INF MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
     SECTION RAW = UefiPayloadPkg/SecureBootEnrollDefaultKeys/keys/crl.bin
     SECTION UI = "SecureBootDbxCert"
   }
+!endif
+
+#
+# TPM support
+#
+!if $(TPM_ENABLE) == TRUE
+INF SecurityPkg/Tcg/TcgDxe/TcgDxe.inf
+INF SecurityPkg/Tcg/TcgConfigDxe/TcgConfigDxe.inf
+INF SecurityPkg/Tcg/Tcg2Dxe/Tcg2Dxe.inf
+INF SecurityPkg/Tcg/Tcg2Config/Tcg2ConfigDxe.inf
 !endif
 
 
