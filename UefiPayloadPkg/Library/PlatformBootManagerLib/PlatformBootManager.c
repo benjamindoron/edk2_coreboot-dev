@@ -193,12 +193,7 @@ PlatformBootManagerAfterConsole (
   VOID
 )
 {
-  EFI_GRAPHICS_OUTPUT_BLT_PIXEL  Black;
-  EFI_GRAPHICS_OUTPUT_BLT_PIXEL  White;
-
-  Black.Blue = Black.Green = Black.Red = Black.Reserved = 0;
-  White.Blue = White.Green = White.Red = White.Reserved = 0xFF;
-
+  // Logo show
   gST->ConOut->ClearScreen (gST->ConOut);
   BootLogoEnableLogo ();
 
@@ -222,16 +217,6 @@ PlatformBootManagerAfterConsole (
     PlatformRegisterFvBootOption (PcdGetPtr (PcdiPXEFile), L"iPXE Network boot", LOAD_OPTION_ACTIVE);
   }
 
-  // Show prompt at bottom center
-  BootLogoUpdateProgress (
-      White,
-      Black,
-      L"Press ESC for Boot Options/Settings",
-      White,
-      0,
-      0
-      );
-
   // Inject boot logo into BGRT table
   AddBGRT();
 
@@ -250,7 +235,33 @@ PlatformBootManagerWaitCallback (
   UINT16          TimeoutRemain
 )
 {
-  return;
+  EFI_GRAPHICS_OUTPUT_BLT_PIXEL_UNION Black;
+  EFI_GRAPHICS_OUTPUT_BLT_PIXEL_UNION White;
+  UINT16                              TimeoutInitial;
+
+  TimeoutInitial = PcdGet16 (PcdPlatformBootTimeOut);
+
+  //
+  // If PcdPlatformBootTimeOut is set to zero, then we consider
+  // that no progress update should be enacted (since we'd only
+  // ever display a one-shot progress of either 0% or 100%).
+  //
+  if (TimeoutInitial == 0) {
+    return;
+  }
+
+  Black.Raw = 0x00000000;
+  White.Raw = 0x00FFFFFF;
+
+  // Show progress at bottom center
+  BootLogoUpdateProgress (
+    White.Pixel,
+    Black.Pixel,
+    L"Press ESC for Boot Options/Settings",
+    White.Pixel,
+    (TimeoutInitial - TimeoutRemain) * 100 / TimeoutInitial,
+    0
+    );
 }
 
 /**
@@ -313,4 +324,3 @@ PlatformBootManagerUnableToBoot (
     EfiBootManagerBoot (&BootManagerMenu);
   }
 }
-
