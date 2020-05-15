@@ -714,6 +714,7 @@
 !else
   UefiPayloadPkg/GraphicsOutputDxe/GraphicsOutputDxe.inf
 !endif
+  UefiPayloadPkg/PciPlatformDxe/PciPlatformDxe.inf
 
   #
   # SMMSTORE
