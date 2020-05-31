@@ -34,6 +34,7 @@
   DEFINE PS2_KEYBOARD_ENABLE     = FALSE
   DEFINE SECURE_BOOT_ENABLE      = FALSE
   DEFINE TPM_ENABLE              = FALSE
+  DEFINE CPU_RNG_ENABLE          = FALSE
 
   #
   # CPU options
@@ -171,6 +172,9 @@
   SecurityManagementLib|MdeModulePkg/Library/DxeSecurityManagementLib/DxeSecurityManagementLib.inf
   UefiBootManagerLib|MdeModulePkg/Library/UefiBootManagerLib/UefiBootManagerLib.inf
   BootLogoLib|MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
+!if $(CPU_RNG_ENABLE) == TRUE
+  RngLib|MdePkg/Library/BaseRngLib/BaseRngLib.inf
+!endif
   CustomizedDisplayLib|MdeModulePkg/Library/CustomizedDisplayLib/CustomizedDisplayLib.inf
   FrameBufferBltLib|MdeModulePkg/Library/FrameBufferBltLib/FrameBufferBltLib.inf
 
@@ -643,6 +647,9 @@
   SecurityPkg/VariableAuthenticated/SecureBootConfigDxe/SecureBootConfigDxe.inf
   OvmfPkg/EnrollDefaultKeys/EnrollDefaultKeys.inf
   UefiPayloadPkg/SecureBootEnrollDefaultKeys/SecureBootSetup.inf
+!endif
+!if $(CPU_RNG_ENABLE) == TRUE
+  SecurityPkg/RandomNumberGenerator/RngDxe/RngDxe.inf
 !endif
 
   #

@@ -254,6 +254,9 @@ INF MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
     SECTION UI = "SecureBootDbxCert"
   }
 !endif
+!if $(CPU_RNG_ENABLE) == TRUE
+INF SecurityPkg/RandomNumberGenerator/RngDxe/RngDxe.inf
+!endif
 
 #
 # TPM support
