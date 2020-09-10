@@ -43,6 +43,7 @@
   #
   DEFINE SECURE_BOOT_ENABLE           = FALSE
   DEFINE TPM_ENABLE                   = FALSE
+  DEFINE CPU_RNG_ENABLE               = FALSE
 
   #
   # CPU options
@@ -675,6 +676,9 @@
   SecurityPkg/VariableAuthenticated/SecureBootConfigDxe/SecureBootConfigDxe.inf
   OvmfPkg/EnrollDefaultKeys/EnrollDefaultKeys.inf
 #  UefiPayloadPkg/SecureBootEnrollDefaultKeys/SecureBootSetup.inf
+!endif
+!if $(CPU_RNG_ENABLE) == TRUE
+  SecurityPkg/RandomNumberGenerator/RngDxe/RngDxe.inf
 !endif
 
   #
