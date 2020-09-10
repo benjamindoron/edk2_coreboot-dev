@@ -165,7 +165,7 @@
   UefiLib|MdePkg/Library/UefiLib/UefiLib.inf
   UefiHiiServicesLib|MdeModulePkg/Library/UefiHiiServicesLib/UefiHiiServicesLib.inf
   HiiLib|MdeModulePkg/Library/UefiHiiLib/UefiHiiLib.inf
-  DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
+  DevicePathLib|MdePkg/Library/UefiDevicePathLibDevicePathProtocol/UefiDevicePathLibDevicePathProtocol.inf
   UefiDecompressLib|MdePkg/Library/BaseUefiDecompressLib/BaseUefiDecompressLib.inf
   PeiServicesTablePointerLib|MdePkg/Library/PeiServicesTablePointerLibIdt/PeiServicesTablePointerLibIdt.inf
   PeiServicesLib|MdePkg/Library/PeiServicesLib/PeiServicesLib.inf
@@ -439,6 +439,7 @@
   MdeModulePkg/Core/Dxe/DxeMain.inf {
     <LibraryClasses>
       NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
+      DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
   }
 
   #
@@ -479,7 +480,11 @@
   MdeModulePkg/Universal/ReportStatusCodeRouter/RuntimeDxe/ReportStatusCodeRouterRuntimeDxe.inf
   MdeModulePkg/Universal/StatusCodeHandler/RuntimeDxe/StatusCodeHandlerRuntimeDxe.inf
   UefiCpuPkg/CpuIo2Dxe/CpuIo2Dxe.inf
-  MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
+  MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf {
+    <LibraryClasses>
+      DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
+      PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
+  }
   MdeModulePkg/Universal/MemoryTest/NullMemoryTestDxe/NullMemoryTestDxe.inf
   MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
   MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
@@ -578,7 +583,6 @@
   #
 [LibraryClasses]
   BcfgCommandLib|ShellPkg/Library/UefiShellBcfgCommandLib/UefiShellBcfgCommandLib.inf
-  DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
   FileHandleLib|MdePkg/Library/UefiFileHandleLib/UefiFileHandleLib.inf
   ShellLib|ShellPkg/Library/UefiShellLib/UefiShellLib.inf
   !include NetworkPkg/NetworkLibs.dsc.inc
@@ -627,7 +631,6 @@
 
     <LibraryClasses>
       DebugLib|MdePkg/Library/UefiDebugLibConOut/UefiDebugLibConOut.inf
-      DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
       HandleParsingLib|ShellPkg/Library/UefiHandleParsingLib/UefiHandleParsingLib.inf
       OrderedCollectionLib|MdePkg/Library/BaseOrderedCollectionRedBlackTreeLib/BaseOrderedCollectionRedBlackTreeLib.inf
       PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
