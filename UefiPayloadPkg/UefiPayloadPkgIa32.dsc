@@ -455,6 +455,7 @@
   #
   MdeModulePkg/Universal/FaultTolerantWritePei/FaultTolerantWritePei.inf
   UefiPayloadPkg/BlSMMStorePei/BlSMMStorePei.inf
+  UefiPayloadPkg/NullVariable/NullVariablePei.inf
 
   MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
 
