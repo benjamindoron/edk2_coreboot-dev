@@ -242,6 +242,11 @@ INF MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
 # Network Support
 #
 !include NetworkPkg/Network.fdf.inc
+!if $(NETWORK_ENABLE) == TRUE
+  FILE DRIVER = 551624B3-8C5A-449D-8674-C326413C9BB6 {
+   SECTION PE32 = UefiPayloadPkg/NetworkDrivers/NetworkDriver.efi
+  }
+!endif
 
 #
 # iPXE support
