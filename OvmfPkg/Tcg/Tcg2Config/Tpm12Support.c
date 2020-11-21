@@ -8,6 +8,7 @@
 **/
 
 #include <Library/BaseLib.h>
+#include <Library/DebugLib.h>
 #include <Library/Tpm12DeviceLib.h>
 
 #include "Tpm12Support.h"
@@ -48,6 +49,13 @@ TestTpm12 (
              (UINT8 *)&Response);
   if (EFI_ERROR (Status)) {
     return Status;
+  }
+
+  if ((SwapBytes16(Response.Hdr.tag) != TPM_TAG_RSP_COMMAND) ||
+      (SwapBytes32(Response.Hdr.returnCode) != TPM_SUCCESS)) {
+    DEBUG ((DEBUG_INFO, "TestTpm12: Response Code error! 0x%08x\n",
+            SwapBytes32(Response.Hdr.returnCode)));
+    return EFI_DEVICE_ERROR;
   }
 
   return EFI_SUCCESS;
