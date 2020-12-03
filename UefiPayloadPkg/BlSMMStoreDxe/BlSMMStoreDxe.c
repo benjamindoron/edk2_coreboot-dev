@@ -260,7 +260,7 @@ BlSMMSTOREInitialise (
   //
   Status      = gDS->GetMemorySpaceDescriptor (SMMStoreInfoHob->ComBuffer, &GcdDescriptor);
   if (EFI_ERROR (Status) || GcdDescriptor.GcdMemoryType != EfiGcdMemoryTypeReserved) {
-    DEBUG((DEBUG_INFO, "%a: No memory space descriptor for com buffer found\n",
+    DEBUG((DEBUG_INFO, "%a: No reserved memory space descriptor for com buffer found\n",
       __FUNCTION__));
 
     //
@@ -289,7 +289,7 @@ BlSMMSTOREInitialise (
   //
   Status      = gDS->GetMemorySpaceDescriptor (SMMStoreInfoHob->MmioAddress, &GcdDescriptor);
   if (EFI_ERROR (Status) || GcdDescriptor.GcdMemoryType != EfiGcdMemoryTypeMemoryMappedIo) {
-    DEBUG((DEBUG_INFO, "%a: No memory space descriptor for com buffer found\n",
+    DEBUG((DEBUG_INFO, "%a: No MMIO memory space descriptor for com buffer found\n",
       __FUNCTION__));
 
     //
