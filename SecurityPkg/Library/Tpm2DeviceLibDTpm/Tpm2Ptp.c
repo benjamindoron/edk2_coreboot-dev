@@ -178,6 +178,11 @@ PtpCrbTpmCommand (
   // if CapCRbIdelByPass == 0, enforce Idle state before sending command
   //
   if (GetCachedIdleByPass () == 0 && (MmioRead32((UINTN)&CrbReg->CrbControlStatus) & PTP_CRB_CONTROL_AREA_STATUS_TPM_IDLE) == 0){
+    //
+    // Workaround for a misbehaving system firmware not setting goIdle
+    //
+    MmioWrite32((UINTN)&CrbReg->CrbControlRequest, PTP_CRB_CONTROL_AREA_REQUEST_GO_IDLE);
+
     Status = PtpCrbWaitRegisterBits (
               &CrbReg->CrbControlStatus,
               PTP_CRB_CONTROL_AREA_STATUS_TPM_IDLE,
