@@ -192,6 +192,7 @@
   #
   MtrrLib|UefiCpuPkg/Library/MtrrLib/MtrrLib.inf
   LocalApicLib|UefiCpuPkg/Library/BaseXApicX2ApicLib/BaseXApicX2ApicLib.inf
+  RngLib|MdePkg/Library/BaseRngLib/BaseRngLib.inf
 
   #
   # Platform
