@@ -3,7 +3,7 @@
 #
 # Provides drivers and definitions to create uefi payload for bootloaders.
 #
-# Copyright (c) 2014 - 2020, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2014 - 2019, Intel Corporation. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
@@ -13,10 +13,13 @@ DEFINE FD_BASE       = 0x00800000
 DEFINE FD_BLOCK_SIZE = 0x00001000
 
 !if $(TARGET) == "NOOPT"
+DEFINE PEI_FV_SIZE = 0x00050000
+DEFINE DXE_FV_SIZE = 0x00800000
 DEFINE FD_SIZE     = 0x00850000
 DEFINE NUM_BLOCKS  = 0x850
 !else
-
+DEFINE PEI_FV_SIZE = 0x30000
+DEFINE DXE_FV_SIZE = 0x3E0000
 DEFINE FD_SIZE     = 0x00410000
 DEFINE NUM_BLOCKS  = 0x410
 !endif
@@ -29,11 +32,14 @@ ErasePolarity = 1
 BlockSize     = $(FD_BLOCK_SIZE)
 NumBlocks     = $(NUM_BLOCKS)
 
-0x00000000|$(FD_SIZE)
-FV = PLDFV
+0x00000000|$(PEI_FV_SIZE)
+FV = PEIFV
+
+$(PEI_FV_SIZE)|$(DXE_FV_SIZE)
+FV = DXEFV
 
 ################################################################################
-[FV.PLDFV]
+[FV.PEIFV]
 BlockSize          = $(FD_BLOCK_SIZE)
 FvAlignment        = 16
 ERASE_POLARITY     = 1
@@ -52,11 +58,14 @@ READ_STATUS        = TRUE
 READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 
-INF UefiPayloadPkg/UefiPayloadEntry/UefiPayloadEntry.inf
+INF UefiPayloadPkg/SecCore/SecCore.inf
 
-FILE FV_IMAGE = 4E35FD93-9C72-4c15-8C4B-E77F1DB2D793 {
-    SECTION FV_IMAGE = DXEFV
-}
+INF MdeModulePkg/Core/Pei/PeiMain.inf
+INF MdeModulePkg/Universal/PCD/Pei/Pcd.inf
+INF MdeModulePkg/Universal/ReportStatusCodeRouter/Pei/ReportStatusCodeRouterPei.inf
+INF MdeModulePkg/Universal/StatusCodeHandler/Pei/StatusCodeHandlerPei.inf
+INF UefiPayloadPkg/BlSupportPei/BlSupportPei.inf
+INF MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
 
 ################################################################################
 
