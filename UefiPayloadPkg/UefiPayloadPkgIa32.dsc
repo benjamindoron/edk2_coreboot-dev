@@ -25,15 +25,18 @@
   OUTPUT_DIRECTORY                    = Build/UefiPayloadPkgIA32
   FLASH_DEFINITION                    = UefiPayloadPkg/UefiPayloadPkg.fdf
 
-  DEFINE SOURCE_DEBUG_ENABLE          = FALSE
-
-  DEFINE PLATFORM_BOOT_TIMEOUT        = 2
-
   #
   # SBL:      UEFI payload for Slim Bootloader
   # COREBOOT: UEFI payload for coreboot
   #
   DEFINE   BOOTLOADER = SBL
+
+  #
+  # Features
+  #
+  DEFINE PS2_KEYBOARD_ENABLE          = FALSE
+  DEFINE USE_PLATFORM_GOP             = FALSE
+  DEFINE PLATFORM_BOOT_TIMEOUT        = 2
 
   #
   # CPU options
@@ -44,6 +47,11 @@
   # PCI options
   #
   DEFINE PCIE_BASE_SUPPORT            = TRUE
+
+  #
+  # Debug options
+  #
+  DEFINE SOURCE_DEBUG_ENABLE          = FALSE
 
   #
   # Serial port set up
@@ -61,7 +69,7 @@
   DEFINE UART_DEFAULT_STOP_BITS       = 1
   DEFINE DEFAULT_TERMINAL_TYPE        = 0
 
-  # Enabling the serial terminal will slow down the boot menu redering!
+  # Enabling the serial terminal will slow down the boot menu rendering!
   DEFINE DISABLE_SERIAL_TERMINAL      = FALSE
 
   #
@@ -308,8 +316,6 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdBootManagerMenuFile|{ 0x21, 0xaa, 0x2c, 0x46, 0x14, 0x76, 0x03, 0x45, 0x83, 0x6e, 0x8a, 0xb6, 0xf4, 0x66, 0x23, 0x31 }
   gEfiMdeModulePkgTokenSpaceGuid.PcdResetOnMemoryTypeInformationChange|FALSE
 
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|$(PCIE_BASE)
-
 !if $(SOURCE_DEBUG_ENABLE)
   gEfiSourceLevelDebugPkgTokenSpaceGuid.PcdDebugLoadImageMethod|0x2
 !endif
@@ -384,6 +390,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow|31
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn|100
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseSize|0
 
 ################################################################################
 #
