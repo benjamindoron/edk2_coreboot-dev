@@ -423,6 +423,13 @@
   MdeModulePkg/Universal/StatusCodeHandler/Pei/StatusCodeHandlerPei.inf
 
   UefiPayloadPkg/BlSupportPei/BlSupportPei.inf
+
+  #
+  # SMMSTORE
+  #
+  MdeModulePkg/Universal/FaultTolerantWritePei/FaultTolerantWritePei.inf
+  UefiPayloadPkg/BlSMMStorePei/BlSMMStorePei.inf
+
   MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
 
 [Components.IA32]

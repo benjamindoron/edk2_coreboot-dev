@@ -65,6 +65,8 @@ INF MdeModulePkg/Universal/PCD/Pei/Pcd.inf
 INF MdeModulePkg/Universal/ReportStatusCodeRouter/Pei/ReportStatusCodeRouterPei.inf
 INF MdeModulePkg/Universal/StatusCodeHandler/Pei/StatusCodeHandlerPei.inf
 INF UefiPayloadPkg/BlSupportPei/BlSupportPei.inf
+INF MdeModulePkg/Universal/FaultTolerantWritePei/FaultTolerantWritePei.inf
+INF UefiPayloadPkg/BlSMMStorePei/BlSMMStorePei.inf
 INF MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
 
 ################################################################################

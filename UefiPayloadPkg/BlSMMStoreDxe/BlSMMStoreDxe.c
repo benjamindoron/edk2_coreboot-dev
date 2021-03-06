@@ -209,17 +209,6 @@ BlSMMSTOREInitialise (
     return EFI_WRITE_PROTECTED;
   }
 
-  //
-  // Update PCDs for VariableRuntimeDxe
-  // Can't do it later as VariableRuntimeDxe has no Depex
-  //
-  PcdSet32S (PcdFlashNvStorageVariableBase,
-    PcdGet32 (PcdFlashNvStorageVariableBase) + SMMStoreInfoHob->MmioAddress);
-  PcdSet32S (PcdFlashNvStorageFtwWorkingBase,
-    PcdGet32 (PcdFlashNvStorageFtwWorkingBase) + SMMStoreInfoHob->MmioAddress);
-  PcdSet32S (PcdFlashNvStorageFtwSpareBase,
-    PcdGet32 (PcdFlashNvStorageFtwSpareBase) + SMMStoreInfoHob->MmioAddress);
-
   Status = SMMStoreInitialize(ComBuf, SMMStoreInfoHob);
   if (EFI_ERROR(Status)) {
     DEBUG((DEBUG_ERROR,"%a: Failed to initialize SMMStore\n",
