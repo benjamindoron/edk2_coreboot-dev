@@ -611,7 +611,7 @@
 !if $(SECURE_BOOT_ENABLE) == TRUE
   SecurityPkg/VariableAuthenticated/SecureBootConfigDxe/SecureBootConfigDxe.inf
   OvmfPkg/EnrollDefaultKeys/EnrollDefaultKeys.inf
-  UefiPayloadPkg/SecureBootEnrollDefaultKeys/SecureBootSetup.inf
+#  UefiPayloadPkg/SecureBootEnrollDefaultKeys/SecureBootSetup.inf
 !endif
 
   #------------------------------
