@@ -37,6 +37,7 @@
   DEFINE PS2_KEYBOARD_ENABLE          = FALSE
   DEFINE USE_PLATFORM_GOP             = FALSE
   DEFINE PLATFORM_BOOT_TIMEOUT        = 2
+  DEFINE USE_CBMEM_FOR_CONSOLE        = FALSE
 
   #
   # Security options
@@ -224,7 +225,11 @@
   #
   TimerLib|UefiPayloadPkg/Library/AcpiTimerLib/AcpiTimerLib.inf
   ResetSystemLib|UefiPayloadPkg/Library/ResetSystemLib/ResetSystemLib.inf
+!if $(USE_CBMEM_FOR_CONSOLE) == TRUE
+  SerialPortLib|UefiPayloadPkg/Library/CbSerialPortLib/CbSerialPortLib.inf
+!else
   SerialPortLib|MdeModulePkg/Library/BaseSerialPortLib16550/BaseSerialPortLib16550.inf
+!endif
   PlatformHookLib|UefiPayloadPkg/Library/PlatformHookLib/PlatformHookLib.inf
   PlatformBootManagerLib|UefiPayloadPkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
   IoApicLib|PcAtChipsetPkg/Library/BaseIoApicLib/BaseIoApicLib.inf
