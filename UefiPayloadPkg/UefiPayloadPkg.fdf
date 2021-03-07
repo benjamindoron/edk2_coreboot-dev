@@ -241,6 +241,14 @@ INF MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
 INF MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
 INF MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
 
+!if $(CSM_ENABLE) == TRUE
+INF  OvmfPkg/Csm/BiosThunk/VideoDxe/VideoDxe.inf
+# TODO: Remove requirement on 8259 protocol
+INF  OvmfPkg/8259InterruptControllerDxe/8259.inf
+INF  OvmfPkg/Csm/LegacyBiosDxe/LegacyBiosDxe.inf
+INF  RuleOverride=CSM OvmfPkg/Csm/Csm16/Csm16.inf
+!endif
+
 #
 # Network Support
 #

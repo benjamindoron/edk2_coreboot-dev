@@ -38,6 +38,7 @@
   DEFINE USE_PLATFORM_GOP             = FALSE
   DEFINE PLATFORM_BOOT_TIMEOUT        = 2
   DEFINE USE_CBMEM_FOR_CONSOLE        = FALSE
+  DEFINE CSM_ENABLE                   = FALSE
 
   #
   # Security options
@@ -595,13 +596,23 @@
     !endif
   }
   UefiCpuPkg/CpuDxe/CpuDxe.inf
-  MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
+  MdeModulePkg/Universal/BdsDxe/BdsDxe.inf {
+    <LibraryClasses>
+!if $(CSM_ENABLE) == TRUE
+      NULL|UefiPayloadPkg/Csm/CsmSupportLib/CsmSupportLib.inf
+      NULL|OvmfPkg/Csm/LegacyBootManagerLib/LegacyBootManagerLib.inf
+!endif
+  }
   MdeModulePkg/Logo/LogoDxe.inf
   MdeModulePkg/Application/UiApp/UiApp.inf {
     <LibraryClasses>
       NULL|MdeModulePkg/Library/BootManagerUiLib/BootManagerUiLib.inf
       NULL|MdeModulePkg/Library/BootMaintenanceManagerUiLib/BootMaintenanceManagerUiLib.inf
       NULL|MdeModulePkg/Library/DeviceManagerUiLib/DeviceManagerUiLib.inf
+!if $(CSM_ENABLE) == TRUE
+      NULL|OvmfPkg/Csm/LegacyBootManagerLib/LegacyBootManagerLib.inf
+      NULL|OvmfPkg/Csm/LegacyBootMaintUiLib/LegacyBootMaintUiLib.inf
+!endif
   }
 
   PcAtChipsetPkg/HpetTimerDxe/HpetTimerDxe.inf
@@ -691,6 +702,14 @@
   MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
   MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
   MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
+
+!if $(CSM_ENABLE) == TRUE
+  OvmfPkg/Csm/BiosThunk/VideoDxe/VideoDxe.inf
+# TODO: Remove requirement on 8259 protocol
+  OvmfPkg/8259InterruptControllerDxe/8259.inf
+  OvmfPkg/Csm/LegacyBiosDxe/LegacyBiosDxe.inf
+  OvmfPkg/Csm/Csm16/Csm16.inf
+!endif
 
   #
   # ISA Support
