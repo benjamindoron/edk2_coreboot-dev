@@ -321,6 +321,7 @@ INF SecurityPkg/Tcg/Tcg2Config/Tcg2ConfigDxe.inf
 #
 !if $(SHELL_TYPE) == BUILD_SHELL
 INF ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
+INF ShellPkg/DynamicCommand/HttpDynamicCommand/HttpDynamicCommand.inf
 INF ShellPkg/DynamicCommand/DpDynamicCommand/DpDynamicCommand.inf
 INF ShellPkg/Application/Shell/Shell.inf
 !endif
