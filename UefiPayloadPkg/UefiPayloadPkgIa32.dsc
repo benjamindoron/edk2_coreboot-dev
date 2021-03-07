@@ -57,6 +57,11 @@
 !include NetworkPkg/NetworkDefines.dsc.inc
 
   #
+  # iPXE support
+  #
+  DEFINE NETWORK_IPXE                   = FALSE
+
+  #
   # CPU options
   #
   DEFINE MAX_LOGICAL_PROCESSORS       = 64
@@ -390,6 +395,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdDxeIplSwitchToLongMode|FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutGopSupport|TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutUgaSupport|FALSE
+  gUefiPayloadPkgTokenSpaceGuid.PcdiPXEEnable|$(NETWORK_IPXE)
 
 [PcdsFixedAtBuild]
   # UEFI spec: Minimal value is 0x8000!

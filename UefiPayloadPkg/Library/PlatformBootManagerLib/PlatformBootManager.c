@@ -215,6 +215,13 @@ PlatformBootManagerAfterConsole (
   //
   PlatformRegisterFvBootOption (PcdGetPtr (PcdShellFile), L"UEFI Shell", LOAD_OPTION_ACTIVE);
 
+  if (FeaturePcdGet (PcdiPXEEnable)) {
+    //
+    // Register iPXE
+    //
+    PlatformRegisterFvBootOption (PcdGetPtr (PcdiPXEFile), L"iPXE Network boot", LOAD_OPTION_ACTIVE);
+  }
+
   // Show prompt at bottom center
   BootLogoUpdateProgress (
       White,
