@@ -23,7 +23,7 @@ Copyright (c)  1999  - 2014, Intel Corporation. All rights reserved
   { 0x878AC2CC, 0x5343, 0x46F2, 0xB5, 0x63, 0x51, 0xF8, 0x9D, 0xAF, 0x56, 0xBA }
 
 #define PLATFORM_GOP_POLICY_PROTOCOL_REVISION_01 0x01
-#define PLATFORM_GOP_POLICY_PROTOCOL_REVISION_02 x0222
+#define PLATFORM_GOP_POLICY_PROTOCOL_REVISION_02 0x02
 
 #pragma pack(1)
 
