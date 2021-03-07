@@ -152,8 +152,16 @@ PlatformBootManagerBeforeConsole (
   VOID
 )
 {
+  EFI_INPUT_KEY                Enter;
   EFI_INPUT_KEY                Escape;
   EFI_BOOT_MANAGER_LOAD_OPTION BootOption;
+
+  //
+  // Register ENTER as CONTINUE key
+  //
+  Enter.ScanCode    = SCAN_NULL;
+  Enter.UnicodeChar = CHAR_CARRIAGE_RETURN;
+  EfiBootManagerRegisterContinueKeyOption (0, &Enter, NULL);
 
   //
   // Map Escape to Boot Manager Menu
@@ -257,7 +265,7 @@ PlatformBootManagerWaitCallback (
   BootLogoUpdateProgress (
     White.Pixel,
     Black.Pixel,
-    L"Press ESC for Boot Options/Settings",
+    L"Press ESC for Boot Options/Settings, ENTER to boot directly",
     White.Pixel,
     (TimeoutInitial - TimeoutRemain) * 100 / TimeoutInitial,
     0
