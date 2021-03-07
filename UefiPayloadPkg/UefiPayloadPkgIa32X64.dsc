@@ -46,6 +46,17 @@
   DEFINE CPU_RNG_ENABLE               = FALSE
 
   #
+  # Network definition
+  #
+  DEFINE NETWORK_ENABLE                 = FALSE
+  DEFINE NETWORK_IP6_ENABLE             = FALSE
+  DEFINE NETWORK_TLS_ENABLE             = FALSE
+  # TODO: Testing
+  DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
+  DEFINE NETWORK_ALLOW_HTTP_CONNECTIONS = TRUE
+!include NetworkPkg/NetworkDefines.dsc.inc
+
+  #
   # CPU options
   #
   DEFINE MAX_LOGICAL_PROCESSORS       = 64
@@ -250,6 +261,7 @@
   BaseCryptLib|CryptoPkg/Library/BaseCryptLib/BaseCryptLib.inf
 !if $(NETWORK_TLS_ENABLE) == TRUE
   OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLib.inf
+  TlsLib|CryptoPkg/Library/TlsLib/TlsLib.inf
 !else
   OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLibCrypto.inf
 !endif
@@ -289,6 +301,11 @@
   Tcg2PhysicalPresenceLib|OvmfPkg/Library/Tcg2PhysicalPresenceLibNull/DxeTcg2PhysicalPresenceLib.inf
   TpmMeasurementLib|MdeModulePkg/Library/TpmMeasurementLibNull/TpmMeasurementLibNull.inf
 !endif
+
+  #
+  # Network libraries
+  #
+!include NetworkPkg/NetworkLibs.dsc.inc
 
 [LibraryClasses.IA32.SEC]
   DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
@@ -405,6 +422,11 @@
 !if $(TPM_ENABLE) == TRUE
   gEfiSecurityPkgTokenSpaceGuid.PcdTpm2AcpiTableRev|4
 !endif
+
+  #
+  # Network Pcds
+  #
+!include NetworkPkg/NetworkPcds.dsc.inc
 
 [PcdsPatchableInModule.common]
   gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x7
@@ -693,6 +715,11 @@
   UefiPayloadPkg/BlSMMStoreDxe/BlSMMStoreDxe.inf
 
   #
+  # Network Support
+  #
+!include NetworkPkg/NetworkComponents.dsc.inc
+
+  #
   # Security
   #
 !if $(SECURE_BOOT_ENABLE) == TRUE
@@ -740,7 +767,6 @@
   BcfgCommandLib|ShellPkg/Library/UefiShellBcfgCommandLib/UefiShellBcfgCommandLib.inf
   FileHandleLib|MdePkg/Library/UefiFileHandleLib/UefiFileHandleLib.inf
   ShellLib|ShellPkg/Library/UefiShellLib/UefiShellLib.inf
-  !include NetworkPkg/NetworkLibs.dsc.inc
 
 [Components.X64]
   ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf {
@@ -779,6 +805,9 @@
 
     <LibraryClasses>
       NULL|ShellPkg/Library/UefiShellNetwork1CommandsLib/UefiShellNetwork1CommandsLib.inf
+    !if $(NETWORK_IP6_ENABLE) == TRUE
+      NULL|ShellPkg/Library/UefiShellNetwork2CommandsLib/UefiShellNetwork2CommandsLib.inf
+    !endif
 
     #------------------------------
     #  Support libraries
